@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Search with Embedded Browser</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #searchBar {
+            margin: 20px;
+        }
+        iframe {
+            width: 90%;
+            height: 500px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Google Search and Website Viewer</h2>
+
+    <!-- Search Bar -->
+    <input type="text" id="searchQuery" placeholder="Search Google or enter a URL">
+    <button onclick="searchOrLoad()">Go</button>
+
+    <br><br>
+
+    <!-- Embedded Website Viewer -->
+    <iframe id="webViewer" src="https://www.google.com"></iframe>
+
+    <script>
+        function searchOrLoad() {
+            let query = document.getElementById("searchQuery").value;
+            let iframe = document.getElementById("webViewer");
+
+            if (query.includes(".")) { 
+                // Assume it's a URL if it contains a dot
+                if (!query.startsWith("http")) {
+                    query = "https://" + query;
+                }
+                iframe.src = query;
+                history.pushState(null, "", "?site=" + encodeURIComponent(query)); // Change URL
+            } else {
+                // Perform Google Search
+                iframe.src = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+                history.pushState(null, "", "?search=" + encodeURIComponent(query)); // Change URL
+            }
+        }
+    </script>
+
+</body>
+</html>
